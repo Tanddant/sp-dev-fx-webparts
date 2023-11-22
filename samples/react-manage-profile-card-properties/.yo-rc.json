@@ -24,7 +24,7 @@
     "environment": "spo",
     "framework": "react",
     "isCreatingSolution": true,
-    "version": "1.10.0",
+    "version": "1.17.2",
     "libraryName": "react-manage-profile-card-properties",
     "libraryId": "a53e4c14-1c0e-4a54-810f-eb5cdf42005b",
     "packageManager": "npm",
