@@ -50,12 +50,11 @@ export const DeleteProfileCardProperty: React.FunctionComponent<IDeleteProfileCa
   // Delete Profile Card Property
   const _onDelete = async (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
-    const { msGraphClient, organizationId } = applicationContext;
+    const { msGraphClient } = applicationContext;
     setState({ ...state, isDeleting: true, disableDelete: true });
     try {
       await deleteProfileCardProperty(
         msGraphClient,
-        organizationId,
         props.directoryPropertyName
       );
       // Return to list and refresh indicator true

@@ -210,7 +210,7 @@ export const AddProfileCardProperty: React.FunctionComponent<IAddProfileCardProp
   const _onAddProperty = async (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
 
-    const { msGraphClient, organizationId } = applicationContext;
+    const { msGraphClient } = applicationContext;
     const { profileCardProperties } = state;
     const _localizationsExtended =
       profileCardProperties.annotations[0].localizations;
@@ -240,7 +240,6 @@ export const AddProfileCardProperty: React.FunctionComponent<IAddProfileCardProp
     try {
       const newProfileCardProperties = await newProfileCardProperty(
         msGraphClient,
-        organizationId,
         _profileCardProperty
       );
 

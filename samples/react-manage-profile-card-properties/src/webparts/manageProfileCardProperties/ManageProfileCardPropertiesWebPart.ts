@@ -67,7 +67,7 @@ export default class ManageProfileCardPropertiesWebPart extends BaseClientSideWe
         this._applyTheme
       );
     }
-    return Promise.resolve();
+    return Promise.resolve(null);
   }
 
   /**

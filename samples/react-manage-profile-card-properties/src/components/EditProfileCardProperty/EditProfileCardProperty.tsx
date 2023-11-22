@@ -118,11 +118,10 @@ export const EditProfileCardProperty: React.FunctionComponent<IEditProfileCardPr
   useEffect(() => {
     (async () => {
 
-      const { msGraphClient, organizationId } = applicationContext;
+      const { msGraphClient } = applicationContext;
       // Get Profile Property
       let _profileCardProperty: IProfileCardProperty = await getProfileCardProperty(
         msGraphClient,
-        organizationId,
         props.directoryPropertyName
       );
       const _localizations: ILocalization[] =
@@ -144,7 +143,7 @@ export const EditProfileCardProperty: React.FunctionComponent<IEditProfileCardPr
         });
         _newLocalizations.push({
           displayName: _localization.displayName,
-          languageDescription: _selectedLanguage[0].text,
+          languageDescription: _selectedLanguage[0]?.text,
           languageTag: _localization.languageTag,
         });
       }
@@ -240,7 +239,7 @@ export const EditProfileCardProperty: React.FunctionComponent<IEditProfileCardPr
   const _onUpdateProperty = async (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
 
-    const { msGraphClient, organizationId } = applicationContext;
+    const { msGraphClient,webpartContext } = applicationContext;
     const { profileCardProperties } = state;
     const _localizationsExtended =
       profileCardProperties.annotations[0].localizations;
@@ -271,8 +270,8 @@ export const EditProfileCardProperty: React.FunctionComponent<IEditProfileCardPr
     try {
        const updatedProfileCardProperties = await updateProfileCardProperty(
         msGraphClient,
-        organizationId,
-        _profileCardProperty
+        _profileCardProperty,
+        webpartContext
       );
       // Return to list and refresh indicator true
       onDismiss(true);

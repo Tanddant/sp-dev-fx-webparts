@@ -4,7 +4,7 @@ import { IManageProfileCardPropertiesProps } from "./IManageProfileCardPropertie
 import { escape } from "@microsoft/sp-lodash-subset";
 import { IManageProfileCardPropertiesState } from "./IManageProfileCardPropertiesState";
 import { IListItem } from "../../Entities/IListItem";
-import { MSGraphClient } from "@microsoft/sp-http";
+import { MSGraphClientV3} from "@microsoft/sp-http";
 import { ListCommandBar } from "../ListCommandBar/ListCommandBar";
 import { WebPartTitle } from "@pnp/spfx-controls-react/lib/WebPartTitle";
 import {
@@ -35,6 +35,7 @@ import { EditProfileCardProperty } from "../EditProfileCardProperty/EditProfileC
 import { DeleteProfileCardProperty } from "../DeleteProfileCardProperty/DeleteProfileCardProperty";
 
 import strings from "ManageProfileCardPropertiesWebPartStrings";
+import { Version } from "@microsoft/sp-core-library";
 // Style Component
 const classNames = mergeStyleSets({
   commandBar: {
@@ -88,9 +89,8 @@ export default class ManageProfileCardProperties extends React.Component<
   IManageProfileCardPropertiesState
 > {
   private listFields: IColumn[] = [];
-  private organizationId: string = undefined;
   private _selection: Selection;
-  private msGrapClient: MSGraphClient;
+  private msGrapClient: MSGraphClientV3;
   private applicationContext: IAppContextProps;
 
   constructor(props: IManageProfileCardPropertiesProps) {
@@ -192,7 +192,7 @@ export default class ManageProfileCardProperties extends React.Component<
 
   public componentDidMount = async (): Promise<void> => {
     try {
-      this.msGrapClient = await this.props.webpartContext.msGraphClientFactory.getClient();
+      this.msGrapClient = await this.props.webpartContext.msGraphClientFactory.getClient("3");
       // const _aadclient  =  await this.props.webpartContext.aadTokenProviderFactory.getTokenProvider();
       this.setState({
         isLoading: true,
@@ -205,13 +205,11 @@ export default class ManageProfileCardProperties extends React.Component<
         );
       }
 
-      this.organizationId = this.props.webpartContext.pageContext.aadInfo.tenantId;
       const _listItems = await this._getProfileCardProperties();
       this.applicationContext = {
         ...this.props,
         listItems: _listItems,
         msGraphClient: this.msGrapClient,
-        organizationId: this.organizationId,
       };
 
       this.setState({
@@ -235,7 +233,6 @@ export default class ManageProfileCardProperties extends React.Component<
     const { getProfileCardProperties } = await useProfileCardProperties();
     const _profileCardProperties: IProfileCardProperty[] = await getProfileCardProperties(
       this.msGrapClient,
-      this.organizationId
     );
     if (_profileCardProperties.length > 0) {
       for (const profileCardProperty of _profileCardProperties) {
